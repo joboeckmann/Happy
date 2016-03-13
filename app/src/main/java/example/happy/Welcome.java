@@ -22,6 +22,7 @@ public class Welcome extends Activity {
         View.OnClickListener rb_listener = new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
                 final Handler handler = new Handler();
                TextView text=(TextView)findViewById(R.id.textView);
                 if (v.getId() == R.id.radioButton) {

@@ -1,0 +1,6 @@
+C:\Users\Josephine\AndroidStudioProjects\Happy\app\build\intermediates\classes\debug
+C:\Users\Josephine\AndroidStudioProjects\Happy\app\build\intermediates\pre-dexed\debug\support-annotations-22.1.1-269bb8af8f31c6878c8ceea7f6995093adeed498.jar
+C:\Users\Josephine\AndroidStudioProjects\Happy\app\build\intermediates\pre-dexed\debug\internal_impl-22.1.1-3d4322d9f3e4ba196725d592f51c159643f4d37c.jar
+C:\Users\Josephine\AndroidStudioProjects\Happy\app\build\intermediates\pre-dexed\debug\classes-7a4cb711810a853740e1993693fae016b2dac98f.jar
+C:\Users\Josephine\AndroidStudioProjects\Happy\app\build\intermediates\pre-dexed\debug\classes-f0ba678d913a6947bb77edb02b6c6d36872117b9.jar
+C:\Users\Josephine\AndroidStudioProjects\Happy\app\build\intermediates\pre-dexed\debug\classes-43de97084cc6ee0eac846437c630dd4d60fd5716.jar
