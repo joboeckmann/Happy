@@ -8,27 +8,27 @@
         android:id="@+id/my_recycler_view"
         android:scrollbars="horizontal"
         android:layout_width="match_parent"
-        android:layout_height="30dp"/>
+        android:layout_height="100dp"/>
 
     <android.support.v7.widget.RecyclerView
         android:id="@+id/my_recycler_view2"
         android:scrollbars="horizontal"
         android:layout_width="match_parent"
-        android:layout_height="30dp"
+        android:layout_height="100dp"
         android:layout_below="@+id/my_recycler_view"/>
 
     <android.support.v7.widget.RecyclerView
         android:id="@+id/my_recycler_view3"
         android:scrollbars="horizontal"
         android:layout_width="match_parent"
-        android:layout_height="30dp"
+        android:layout_height="100dp"
         android:layout_below="@+id/my_recycler_view2"/>
 
     <android.support.v7.widget.RecyclerView
         android:id="@+id/my_recycler_view4"
         android:scrollbars="horizontal"
         android:layout_width="match_parent"
-        android:layout_height="30dp"
+        android:layout_height="100dp"
         android:layout_below="@+id/my_recycler_view3"/>
 
 </RelativeLayout>
