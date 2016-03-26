@@ -92,7 +92,8 @@ public class MainActivity extends Activity {
         button.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 //stupidBug=true;
-                g.doDeckStuff(rViews[0].adapter, rViews[1].adapter, rViews[2].adapter, rViews[3].adapter);
+                if (g.deck.size() > 0){
+                    g.doDeckStuff(rViews[0].adapter, rViews[1].adapter, rViews[2].adapter, rViews[3].adapter);
 //                if(g.first.inUse) {
 //                    g.makeSmall();
 //                }
@@ -100,7 +101,7 @@ public class MainActivity extends Activity {
 //                    g.makeSmall(2);
 //                }
                 button.setText("Deck (" + g.deck.size() + ")");
-
+            }
             }
 
         });
