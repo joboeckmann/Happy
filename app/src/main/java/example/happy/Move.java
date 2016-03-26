@@ -8,6 +8,7 @@ public class Move {
     public int pos;
     public int id;
     public boolean inUse;
+    public MyAdapter adapter;
     public Move(){
         id=-1;
         pos=-1;

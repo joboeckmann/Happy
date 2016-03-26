@@ -10,7 +10,7 @@ import android.widget.TextView;
 import java.util.ArrayList;
 
 public class MyAdapter extends RecyclerView.Adapter<MyAdapter.ViewHolder> {
-    private ArrayList<Integer> mDataset;
+    public ArrayList<Integer> mDataset;
     private  ClickListener clickListener;
     private ViewHolder vh;
     public  ArrayList<View> vList;
