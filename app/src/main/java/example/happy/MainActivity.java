@@ -1,6 +1,7 @@
 package example.happy;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -9,7 +10,9 @@ import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.TextView;
+
 
 import java.util.ArrayList;
 
@@ -36,6 +39,8 @@ public class MainActivity extends Activity {
 //    private MyAdapter mAdapter4;
     private example.happy.RView[] rViews;
     private Game g;
+    private Button button;
+    //private Boolean stupidBug;
 
 
     @Override
@@ -80,8 +85,33 @@ public class MainActivity extends Activity {
 //        mRecyclerView2.setAdapter(mAdapter2);
 //        mRecyclerView3.setAdapter(mAdapter3);
 //        mRecyclerView4.setAdapter(mAdapter4);
+        //stupidBug=false;
 
+        button = (Button) findViewById(R.id.butt2);
+        button.setText("Deck (48)");
+        button.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                //stupidBug=true;
+                g.doDeckStuff(rViews[0].adapter, rViews[1].adapter, rViews[2].adapter, rViews[3].adapter);
+//                if(g.first.inUse) {
+//                    g.makeSmall();
+//                }
+//                if (g.second.inUse){
+//                    g.makeSmall(2);
+//                }
+                button.setText("Deck (" + g.deck.size() + ")");
 
+            }
+
+        });
+       Button button2 = (Button) findViewById(R.id.butt3);
+        button2.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                Intent intent = new Intent(MainActivity.this, JokeActivity.class);
+                startActivity(intent);
+            }
+
+        });
 
 
     }
@@ -95,10 +125,14 @@ public class MainActivity extends Activity {
            rViews[index].adapter.setOnItemClickListener(new MyAdapter.ClickListener() {
                @Override
                public void onItemClick(int position, View v) {
-                   boolean move=g.makeMove(position,i+1,rViews[i].adapter);
+                   //boolean move=true;
+                  // if (!stupidBug) {
+                      Boolean  move = g.makeMove(position, i + 1, rViews[i].adapter);
+                  // }
                    if (!move){
-                       g.makeBig(position,rViews[i].adapter.vList);
+                       g.makeBig(position);//,rViews[i].adapter.vList);
                    }
+                  // stupidBug=false;
                // for (int j = 0; j <= position; j++) {
 
 //                    v=rViews[i].adapter.vList.get(j);
@@ -112,6 +146,7 @@ public class MainActivity extends Activity {
 
            }
        }
+
 //        ((MyAdapter) mAdapter).setOnItemClickListener(new MyAdapter.ClickListener() {
 //            @Override
 //            public void onItemClick(int position, View v) {

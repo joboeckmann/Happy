@@ -43,8 +43,8 @@ public class Game {
         int p1;
         int p2;
         for (int i=0;i<30;i++){
-            p1=r.nextInt(49);
-            p2=r.nextInt(49);
+            p1=r.nextInt(48);
+            p2=r.nextInt(48);
             t=deck.get(p1);
             deck.set(p1,deck.get(p2));
             deck.set(p2,t);
@@ -65,28 +65,39 @@ public class Game {
         second.id=id;
         second.pos=pos;
         second.adapter=adapter;
+        second.inUse=true;
 
        if (validMove(first.id,second.id,first.adapter.mDataset.get(first.pos),second.adapter.mDataset.get(second.pos))) {
+//           for (int i = first.pos; i > -1; i--) {
+//                    nums.add(adapter.mDataset.remove(i));
+//                   first.adapter.notifyItemRemoved(0);
+//               }
+//           int size=nums.size();
+//           for (int i = 0; i < size; i++) {
+//                   second.adapter.mDataset.add(0, nums.remove(0));
+//                   second.adapter.notifyItemInserted(0);
+//               }
            if (first.id==1) {
                for (int i = first.pos; i > -1; i--) {
-                    nums.add(stack1.remove(0));
+                    nums.add(stack1.remove(i));
                    first.adapter.notifyItemRemoved(0);
                }
            }
            else if (first.id==2) {
                for (int i = first.pos; i > -1; i--) {
-                   nums.add(stack2.remove(0));
+                   nums.add(stack2.remove(i));
                    first.adapter.notifyItemRemoved(0);
                }
-           }           else if (first.id==3) {
+           }
+           else if (first.id==3) {
                for (int i = first.pos; i > -1; i--) {
-                   nums.add(stack3.remove(0));
+                   nums.add(stack3.remove(i));
                    first.adapter.notifyItemRemoved(0);
                }
            }
            else if (first.id==4) {
                for (int i = first.pos; i > -1; i--) {
-                   nums.add(stack4.remove(0));
+                   nums.add(stack4.remove(i));
                    first.adapter.notifyItemRemoved(0);
                }
            }
@@ -116,38 +127,71 @@ public class Game {
                }
            }
 
-
-
        }
+        makeSmall();
         first.inUse=false;
+        second.inUse=false;
         return true;
     }
 
     private boolean validMove(int id, int id2, int n1, int n2) {
         if (id==id2){
-            makeSmall();
+            //makeSmall();
             return false;
         }
         if (n1!=n2&&Math.abs(n1-n2)!=1){
-            makeSmall();
+           // makeSmall();
             return false;
         }
         return true;
     }
 
-    private void makeSmall() {
+    public void makeSmall() {
         for (int i=0;i<first.adapter.vList.size();i++){
             ((TextView) first.adapter.vList.get(i)).setTextSize(TypedValue.COMPLEX_UNIT_SP, 70);
         }
 
     }
 
-    public void makeBig(int pos, ArrayList<View> stack) {
+    public void makeBig(int pos){//, ArrayList<View> stack) {
         for (int j = 0; j <= pos; j++) {
             // v=rViews[i].adapter.vList.get(j);
-            ((TextView) stack.get(j)).setTextSize(TypedValue.COMPLEX_UNIT_SP, 100);
+//            ((TextView) stack.get(stack.size()-j-1)).setTextSize(TypedValue.COMPLEX_UNIT_SP, 100);
+//            Log.i("Big","pos"+pos+" j"+j);
+//            int t=first.adapter.vList.size();//-j-1;
+//            Log.i("Big", "textview"+t);
+            ((TextView) first.adapter.vList.get(first.adapter.vList.size()-j-1)).setTextSize(TypedValue.COMPLEX_UNIT_SP, 100);
         }
     }
 
 
+    public void doDeckStuff(MyAdapter a1,MyAdapter a2, MyAdapter a3, MyAdapter a4) {
+        stack1.add(0,deck.remove(0));
+        a1.notifyItemInserted(0);
+        for (int i=0;i<a1.vList.size();i++){///had to add these stupid lines of code because it was getting big for no reason!
+            ((TextView) a1.vList.get(i)).setTextSize(TypedValue.COMPLEX_UNIT_SP, 70);
+        }
+        stack2.add(0,deck.remove(0));
+        a2.notifyItemInserted(0);
+        for (int i=0;i<a2.vList.size();i++){
+            ((TextView) a2.vList.get(i)).setTextSize(TypedValue.COMPLEX_UNIT_SP, 70);
+        }
+        stack3.add(0,deck.remove(0));
+        a3.notifyItemInserted(0);
+        for (int i=0;i<a3.vList.size();i++){
+            ((TextView) a3.vList.get(i)).setTextSize(TypedValue.COMPLEX_UNIT_SP, 70);
+        }
+        stack4.add(0,deck.remove(0));
+        a4.notifyItemInserted(0);
+        for (int i=0;i<a4.vList.size();i++){
+            ((TextView) a4.vList.get(i)).setTextSize(TypedValue.COMPLEX_UNIT_SP, 70);
+        }
+
+    }
+
+    public void makeSmall(int id) {
+        for (int i=0;i<second.adapter.vList.size();i++){
+            ((TextView) second.adapter.vList.get(i)).setTextSize(TypedValue.COMPLEX_UNIT_SP, 70);
+        }
+    }
 }

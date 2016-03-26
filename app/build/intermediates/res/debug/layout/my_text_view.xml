@@ -6,4 +6,4 @@
     android:layout_height="wrap_content"
     android:text="TextView"
     android:layout_marginLeft="20dp"
-    android:textSize="30sp"/><!-- From: file:/C:/Users/Josephine/AndroidStudioProjects/Happy/app/src/main/res/layout/my_text_view.xml -->
+    android:textSize="70dp"/><!-- From: file:/C:/Users/Josephine/AndroidStudioProjects/Happy/app/src/main/res/layout/my_text_view.xml -->
