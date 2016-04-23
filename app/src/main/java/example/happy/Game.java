@@ -12,15 +12,15 @@ import java.util.Random;
  * Created by Josephine on 3/19/2016.
  */
 public class Game {
-    public ArrayList<Integer> stack1;
-    public ArrayList<Integer> stack2;
-    public ArrayList<Integer> stack3;
-    public ArrayList<Integer> stack4;
-    public ArrayList<Integer> deck;
+    public ArrayList<Number> stack1;
+    public ArrayList<Number> stack2;
+    public ArrayList<Number> stack3;
+    public ArrayList<Number> stack4;
+    public ArrayList<Number> deck;
     public Move first;
     public Move second;
-    public ArrayList<Integer> nest;
-    public ArrayList<ArrayList<Integer>> sList;
+    public ArrayList<Number> nest;
+    public ArrayList<ArrayList<Number>> sList;
 
     public Game(){
         nest=new ArrayList<>();
@@ -40,7 +40,7 @@ public class Game {
 
         for (int i=0;i<4;i++){
             for (int j=1;j<14;j++){
-                deck.add(j);
+                deck.add(new Number(j,false));
             }
         }
         stack1.add(deck.remove(r.nextInt(52)));
@@ -48,7 +48,7 @@ public class Game {
         stack3.add(deck.remove(r.nextInt(50)));
         stack4.add(deck.remove(r.nextInt(49)));
 
-        int t;
+        Number t;
         int p1;
         int p2;
         for (int i=0;i<30;i++){
@@ -67,28 +67,25 @@ public class Game {
             first.id=id;
             first.inUse=true;
             first.adapter=adapter;
-            first.num=adapter.mDataset.get(pos);
+            first.num=adapter.mDataset.get(pos).num;
             first.stack=sList.get(id-1);
+           // makeBig(first.pos, first.adapter);
+
             return false;
 
         }
-        ArrayList<Integer> nums=new ArrayList<>();
+        ArrayList<Number> nums=new ArrayList<>();
+       // ArrayList<View>views=new ArrayList<>();
         second.id=id;
         second.pos=pos;
         second.adapter=adapter;
-        second.num=adapter.mDataset.get(pos);
+        second.num=adapter.mDataset.get(pos).num;
         second.inUse=true;
         second.stack=sList.get(id-1);
 
+        makeSmall();
        if (validMove(first.id,second.id,first.num,second.num,first.pos)) {
-//           for (int i = first.pos; i > -1; i--) {
-//                    nums.add(adapter.mDataset.remove(i));
-//                   first.adapter.notifyItemRemoved(0);
-//               }
-//           int size=nums.size();
-//           for (int i = 0; i < size; i++) {
-//                   second.adapter.mDataset.add(0, nums.remove(0));
-//                   second.adapter.notifyItemInserted(0);
+
            if (first.num==second.num){
                moveToNest(first.id,first.adapter);
                moveToNest(second.id, second.adapter);
@@ -97,81 +94,37 @@ public class Game {
            else{
                for (int i = first.pos; i > -1; i--) {
                     nums.add(first.stack.remove(i));
+                   //first.adapter.vList.remove(i);//This is something I changed hopefully I don't break everything!!
                    first.adapter.notifyItemRemoved(0);
                }
                int size=nums.size();
                for (int i = 0; i < size; i++) {
                    second.stack.add(0, nums.remove(0));
+                   //second.adapter.vList.add(0, views.remove(0));//This is something I changed hopefully I don't break everything!!
                    second.adapter.notifyItemInserted(0);
                }
            }
            checkFive(second.stack,second.adapter);
-//           else  if (first.id==1) {
-//               for (int i = first.pos; i > -1; i--) {
-//                    nums.add(stack1.remove(i));
-//                   first.adapter.notifyItemRemoved(0);
-//               }
-//           }
-//           else if (first.id==2) {
-//               for (int i = first.pos; i > -1; i--) {
-//                   nums.add(stack2.remove(i));
-//                   first.adapter.notifyItemRemoved(0);
-//               }
-//           }
-//           else if (first.id==3) {
-//               for (int i = first.pos; i > -1; i--) {
-//                   nums.add(stack3.remove(i));
-//                   first.adapter.notifyItemRemoved(0);
-//               }
-//           }
-//           else if (first.id==4) {
-//               for (int i = first.pos; i > -1; i--) {
-//                   nums.add(stack4.remove(i));
-//                   first.adapter.notifyItemRemoved(0);
-//               }
-//           }
-//           int size=nums.size();
-//           if (second.id==1) {
-//               for (int i = 0; i < size; i++) {
-//                   stack1.add(0, nums.remove(0));
-//                   second.adapter.notifyItemInserted(0);
-//               }
-//           }
-//          else if (second.id==2) {
-//               for (int i = 0; i < size; i++) {
-//                   stack2.add(0, nums.remove(0));
-//                   second.adapter.notifyItemInserted(0);
-//               }
-//           }
-//           else if (second.id==3) {
-//               for (int i = 0; i < size; i++) {
-//                   stack3.add(0, nums.remove(0));
-//                   second.adapter.notifyItemInserted(0);
-//               }
-//           }
-//           else if (second.id==4) {
-//               for (int i = 0; i < size; i++) {
-//                   stack4.add(0, nums.remove(0));
-//                   second.adapter.notifyItemInserted(0);
-//               }
-//           }
 
        }
-        makeSmall();
+
         first.inUse=false;
         second.inUse=false;
+       // Log.i(""+first.id,first.adapter.vListString());
+       // Log.i(""+second.id,second.adapter.vListString());
         return true;
     }
 
-    private void checkFive(ArrayList<Integer> stack, MyAdapter a) {
+    private void checkFive(ArrayList<Number> stack, MyAdapter a) {
         if (stack.size()<5)return;
-        int direction=stack.get(0)-stack.get(1);
+        int direction=stack.get(0).num-stack.get(1).num;
         if (Math.abs(direction)!=1)return;
         for (int i=1;i<4;i++){//check for five
-            if (stack.get(i)-stack.get(i+1)!=direction)return;
+            if (stack.get(i).num-stack.get(i+1).num!=direction)return;
         }
         for (int i=0;i<5;i++){
             nest.add(stack.remove(0));
+            //a.vList.remove(0);///This is something I changed hopefully I don't break everything!!
             a.notifyItemRemoved(0);
         }
     }
@@ -192,7 +145,7 @@ public class Game {
         if (pos==0)return true;
 
         for (int j = 0; j <= pos; j++) {
-            if (j!=pos&&first.stack.get(j)-first.stack.get(j+1)!=direction)return false;
+            if (j!=pos&&first.stack.get(j).num-first.stack.get(j+1).num!=direction)return false;
             //((TextView) first.adapter.vList.get(first.adapter.vList.size()-j-1)).setTextSize(TypedValue.COMPLEX_UNIT_SP, 100);
         }
 
@@ -209,59 +162,85 @@ public class Game {
             case 3:nest.add(stack3.remove(0));break;
             case 4:nest.add(stack4.remove(0));break;
         }
+       // a.vList.remove(0);
         a.notifyItemRemoved(0);
+
 
     }
 
     public void makeSmall() {
-        for (int i=0;i<first.adapter.vList.size();i++){
-            ((TextView) first.adapter.vList.get(i)).setTextSize(TypedValue.COMPLEX_UNIT_SP, 70);
+        for (int i=0;i<first.adapter.mDataset.size();i++){
+           // ((TextView) first.adapter.vList.get(i)).setTextSize(TypedValue.COMPLEX_UNIT_SP, 70);
+            first.adapter.mDataset.get(i).big=false;
+            first.adapter.notifyItemChanged(i);
         }
 
     }
     //this whole method is screwy!
-    public void makeBig(int pos){//, ArrayList<View> stack) {
+//    public void makeBig(int pos,MyAdapter a){//, ArrayList<View> stack) {
+//        int direction=0;
+//        for (int j = 0; j <= pos; j++) {
+//            // v=rViews[i].adapter.vList.get(j);
+////            ((TextView) stack.get(stack.size()-j-1)).setTextSize(TypedValue.COMPLEX_UNIT_SP, 100);
+////            Log.i("Big","pos"+pos+" j"+j);
+////            int t=first.adapter.vList.size();//-j-1;
+////            ((TextView) first.adapter.vList.get(first.adapter.vList.size()-j-1)).setTextSize(TypedValue.COMPLEX_UNIT_SP, 100);
+//            if (j==0&&first.stack.size()>1){
+//                direction=first.stack.get(0)-first.stack.get(1);
+//                ((TextView) first.adapter.vList.get(first.adapter.vList.size()-1)).setTextSize(TypedValue.COMPLEX_UNIT_SP, 100);
+//
+//                if (Math.abs(direction)!=1) return;
+//            }
+//            if (j!=pos&&first.stack.get(j)-first.stack.get(j+1)!=direction)return;
+//            ((TextView) first.adapter.vList.get(first.adapter.vList.size()-j-1)).setTextSize(TypedValue.COMPLEX_UNIT_SP, 100);
+//            //a.notify(first.adapter.vList.size()-j-1);
+//
+//        }
+    public void PleaseJustMakeItBig(int pos){
         int direction=0;
         for (int j = 0; j <= pos; j++) {
-            // v=rViews[i].adapter.vList.get(j);
-//            ((TextView) stack.get(stack.size()-j-1)).setTextSize(TypedValue.COMPLEX_UNIT_SP, 100);
-//            Log.i("Big","pos"+pos+" j"+j);
-//            int t=first.adapter.vList.size();//-j-1;
-//            ((TextView) first.adapter.vList.get(first.adapter.vList.size()-j-1)).setTextSize(TypedValue.COMPLEX_UNIT_SP, 100);
             if (j==0&&first.stack.size()>1){
-                direction=first.stack.get(0)-first.stack.get(1);
-                ((TextView) first.adapter.vList.get(first.adapter.vList.size()-1)).setTextSize(TypedValue.COMPLEX_UNIT_SP, 100);
+                direction=first.stack.get(0).num-first.stack.get(1).num;
+//                ((TextView) first.adapter.vList.get(first.adapter.vList.size()-1)).setTextSize(TypedValue.COMPLEX_UNIT_SP, 100);
+                //first.adapter.mDataset.get(first.adapter.mDataset.size()-1).big=true;
+                first.adapter.mDataset.get(0).big=true;
+                first.adapter.notifyItemChanged(0);
                 if (Math.abs(direction)!=1) return;
             }
-            if (j!=pos&&first.stack.get(j)-first.stack.get(j+1)!=direction)return;
-            ((TextView) first.adapter.vList.get(first.adapter.vList.size()-j-1)).setTextSize(TypedValue.COMPLEX_UNIT_SP, 100);
+            if (j!=pos&&first.stack.get(j).num-first.stack.get(j+1).num!=direction)return;
+            //((TextView) first.adapter.vList.get(first.adapter.vList.size()-j-1)).setTextSize(TypedValue.COMPLEX_UNIT_SP, 100);
+           // first.adapter.mDataset.get(first.adapter.mDataset.size()-j-1).big=true;
+            first.adapter.mDataset.get(j).big=true;
+            first.adapter.notifyItemChanged(j);
         }
+    }
 
 //        Log.i("Big", first.adapter.vList.toString());
-    }
+//    }
 
 
     public void doDeckStuff(MyAdapter a1,MyAdapter a2, MyAdapter a3, MyAdapter a4) {
         stack1.add(0,deck.remove(0));
         a1.notifyItemInserted(0);
-        for (int i=0;i<a1.vList.size();i++){///had to add these stupid lines of code because it was getting big for no reason!
-            ((TextView) a1.vList.get(i)).setTextSize(TypedValue.COMPLEX_UNIT_SP, 70);
-        }
+//        for (int i=0;i<a1.vList.size();i++){///had to add these stupid lines of code because it was getting big for no reason!
+//            ((TextView) a1.vList.get(i)).setTextSize(TypedValue.COMPLEX_UNIT_SP, 70);
+//        }
         stack2.add(0,deck.remove(0));
         a2.notifyItemInserted(0);
-        for (int i=0;i<a2.vList.size();i++){
-            ((TextView) a2.vList.get(i)).setTextSize(TypedValue.COMPLEX_UNIT_SP, 70);
-        }
+//        for (int i=0;i<a2.vList.size();i++){
+//            ((TextView) a2.vList.get(i)).setTextSize(TypedValue.COMPLEX_UNIT_SP, 70);
+//        }
         stack3.add(0,deck.remove(0));
         a3.notifyItemInserted(0);
-        for (int i=0;i<a3.vList.size();i++){
-            ((TextView) a3.vList.get(i)).setTextSize(TypedValue.COMPLEX_UNIT_SP, 70);
-        }
+//        for (int i=0;i<a3.vList.size();i++){
+//            ((TextView) a3.vList.get(i)).setTextSize(TypedValue.COMPLEX_UNIT_SP, 70);
+//        }
         stack4.add(0,deck.remove(0));
         a4.notifyItemInserted(0);
-        for (int i=0;i<a4.vList.size();i++){
-            ((TextView) a4.vList.get(i)).setTextSize(TypedValue.COMPLEX_UNIT_SP, 70);
-        }
+//        for (int i=0;i<a4.vList.size();i++){
+//            ((TextView) a4.vList.get(i)).setTextSize(TypedValue.COMPLEX_UNIT_SP, 70);
+//        }
+//
 
     }
 

@@ -5,6 +5,7 @@ import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
@@ -53,8 +54,8 @@ public class JokeActivity extends Activity {
 
 private void setLines(){
     Random r=new Random();
-    int index=r.nextInt(9)+1;//REMEMBER TO UPDATE THIS FOR EVERY LINE ADDED
-    String i=" "+index+" ";
+    int index=r.nextInt(10)+1;//REMEMBER TO UPDATE THIS FOR EVERY LINE ADDED
+    String i=""+index;
     line1=i;
     boolean found=false;
 
@@ -65,16 +66,18 @@ private void setLines(){
         BufferedReader in = new BufferedReader(new InputStreamReader(inputStream));
         while (!found&&in.ready()) {
             String line = in.readLine();
+            String[] parts=line.split("/");
+            //Log.i("WhatZeHell", parts[2]);
 
-            if (line.contains(i)){
+
+            if (parts[0].equals(i)){
                 found=true;
-                if (line.contains("1l")){
-                    line1=line.substring(6);
+                if (parts[1].equals("1l")){
+                    line1=parts[2];///need to update this for double digits, roger that I am on it
                 }
-                else if (line.contains("2l")){
-                    String[] lines=line.split("/");
-                    line1=lines[0].substring(6);
-                    line2=lines[1];
+                else if (parts[1].equals("2l")){
+                    line1=parts[2];
+                    line2=parts[3];
                 }
                 else{
                     line2="Problem here";

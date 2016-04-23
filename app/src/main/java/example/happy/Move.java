@@ -12,7 +12,7 @@ public class Move {
     public boolean inUse;
     public MyAdapter adapter;
     public int num;
-    public ArrayList<Integer> stack;
+    public ArrayList<Number> stack;
     public Move(){
         id=-1;
         pos=-1;

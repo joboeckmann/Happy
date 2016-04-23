@@ -129,9 +129,12 @@ public class MainActivity extends Activity {
                    //boolean move=true;
                   // if (!stupidBug) {
                       Boolean  move = g.makeMove(position, i + 1, rViews[i].adapter);
-                  // }
+                  // Log.i(" "+i,rViews[i].adapter.vListString());
+                  //}
                    if (!move){
-                       g.makeBig(position);//,rViews[i].adapter.vList);
+                       //((TextView) v).setTextSize(TypedValue.COMPLEX_UNIT_SP, 100);
+                       //g.makeBig(position, rViews[i].adapter);//,rViews[i].adapter.vList);
+                       g.PleaseJustMakeItBig(position);
                    }
                   // stupidBug=false;
                // for (int j = 0; j <= position; j++) {

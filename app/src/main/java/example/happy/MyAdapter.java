@@ -10,11 +10,12 @@ import android.widget.TextView;
 import java.util.ArrayList;
 
 public class MyAdapter extends RecyclerView.Adapter<MyAdapter.ViewHolder> {
-    public ArrayList<Integer> mDataset;
+    public ArrayList<Number> mDataset;
     private  ClickListener clickListener;
     private ViewHolder vh;
-    public  ArrayList<View> vList;
+    //public  ArrayList<View> vList;
    public int stackID;
+
 
     // Provide a reference to the views for each data item
     // Complex data items may need more than one view per item, and
@@ -26,7 +27,8 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.ViewHolder> {
             super(v);
             v.setOnClickListener(this);
             mTextView= (TextView) v.findViewById(R.id.numView);
-            vList.add(v);
+           // vList.add(v);
+
         }
 
         @Override
@@ -41,27 +43,33 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.ViewHolder> {
 
 
     // Provide a suitable constructor (depends on the kind of dataset)
-    public MyAdapter(ArrayList<Integer> myDataset,int id) {
-        vList=new ArrayList<View>();
+    public MyAdapter(ArrayList<Number> myDataset,int id) {
+        //vList=new ArrayList<View>();
         mDataset = myDataset;
         stackID=id;
     }
 
+    @Override
+    public int getItemViewType(int position) {
+       if (mDataset.get(position).big) return 2;
 
-   // Create new views (invoked by the layout manager)
+        return 1;
+    }
+
+    // Create new views (invoked by the layout manager)
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent,
                                                    int viewType) {
         TextView v;
         // create a new view
-
+    if (viewType==1)
              v = (TextView) LayoutInflater.from(parent.getContext())
                     .inflate(R.layout.my_text_view, parent, false);
 //        }
-//        else{
-//            v = (TextView) LayoutInflater.from(parent.getContext())
-//                    .inflate(R.layout.large_text, parent, false);
-//        }
+        else{
+            v = (TextView) LayoutInflater.from(parent.getContext())
+                    .inflate(R.layout.large_text, parent, false);
+        }
         // set the view's size, margins, paddings and layout parameters
 
          vh = new ViewHolder(v);
@@ -73,7 +81,7 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.ViewHolder> {
     public void onBindViewHolder(ViewHolder holder, int position) {
         // - get element from your dataset at this position
         // - replace the contents of the view with that element
-        holder.mTextView.setText(""+mDataset.get(position));
+        holder.mTextView.setText(""+mDataset.get(position).num);
 
 
 
@@ -87,9 +95,18 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.ViewHolder> {
 
     }
 
-
-
     public interface ClickListener {
         void onItemClick(int position, View v);
     }
+//    public void makeBig(int pos){
+//
+//    }
+
+//    public String vListString(){
+//        String s="";
+//        for (int i=0;i<vList.size();i++){
+//            s=s+vList.get(i).getHeight()+", ";
+//        }
+//        return s;
+//    }
 }
