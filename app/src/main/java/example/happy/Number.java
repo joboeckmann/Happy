@@ -11,4 +11,8 @@ public class Number {
         this.num=num;
         this.big=big;
     }
+    public String toString(){
+        return ""+num;
+    }
+
 }

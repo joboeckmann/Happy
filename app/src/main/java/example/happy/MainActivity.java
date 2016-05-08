@@ -113,6 +113,22 @@ public class MainActivity extends Activity {
             }
 
         });
+        Button button3 = (Button) findViewById(R.id.butt4);
+        button3.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                //Log.i("Butt", "Here");
+                int r=g.undoThatSheet();
+                if (r==2){
+                    g.undoThatSheet();
+                }
+                else if (r==4){
+                    g.undoThatSheet();
+                    g.undoThatSheet();
+                    g.undoThatSheet();
+                }
+            }
+
+        });
 
 
     }
