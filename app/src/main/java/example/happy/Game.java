@@ -24,7 +24,7 @@ public class Game {
     private Boolean freebie;
     private Undo head;
     private Undo temp;
-
+//Good luck trying to understand this mess! Haha! I feed off of your misery!
     public Game(){
         head=new Undo(null,null, null, null, 0, false, false);
         freebie=false;
@@ -43,7 +43,7 @@ public class Game {
         sList.add(stack3);
         sList.add(stack4);
 
-        for (int i=0;i<4;i++){
+        for (int i=0;i<4;i++){//creates the dirty dirty deck
             for (int j=1;j<14;j++){
                 deck.add(new Number(j,false));
             }
@@ -53,6 +53,7 @@ public class Game {
         stack3.add(deck.remove(r.nextInt(50)));
         stack4.add(deck.remove(r.nextInt(49)));
 
+        //shuffle that deck baby!
         Number t;
         int p1;
         int p2;
@@ -91,6 +92,8 @@ public class Game {
         makeSmall();
        if (validMove(first.id,second.id,first.num,second.num,first.pos)) {
 
+
+
            if (first.id!=second.id&&first.num==second.num&&first.pos==0&&second.pos==0){
                moveToNest(first.id,first.adapter);
                moveToNest(second.id, second.adapter);
@@ -113,6 +116,10 @@ public class Game {
            }
 //               }
            else{
+               if (second.num==0){
+                   second.stack.remove(0);
+                   second.adapter.notifyItemRemoved(0);
+               }
                for (int i = first.pos; i > -1; i--) {
                     nums.add(first.stack.remove(i));
                    //first.adapter.vList.remove(i);//This is something I changed hopefully I don't break everything!!
@@ -130,12 +137,20 @@ public class Game {
                //printUndoTrain();
            }
            checkFive(second.stack,second.adapter);
-           Log.i("nest", nest.toString());
+           //Log.i("nest", nest.toString());
        }
 
         first.inUse=false;
         second.inUse=false;
-        if (first.stack.size()==0) freebie=true;
+        if (first.stack.size()==0) {
+            freebie = true;
+            first.stack.add(new Number(0,false));
+            first.adapter.notifyItemInserted(0);
+        }
+        if (second.stack.size()==0){
+            second.stack.add(new Number(0,false));
+            second.adapter.notifyItemInserted(0);
+        }
        // Log.i("butt", " "+freebie);
        // Log.i(""+first.id,first.adapter.vListString());
        // Log.i(""+second.id,second.adapter.vListString());
@@ -145,12 +160,25 @@ public class Game {
     private void checkFive(ArrayList<Number> stack, MyAdapter a) {
         if (stack.size()<5)return;
         int direction=stack.get(0).num-stack.get(1).num;
-        if (Math.abs(direction)!=1)return;
+        if (Math.abs(direction)!=1&&Math.abs(direction)!=12)return;
         int count=1;
         int i=1;
-       while (i+1<stack.size()&&stack.get(i).num-stack.get(i+1).num==direction){
-           count++;
-           i++;
+       while (i+1<stack.size()){
+           if (stack.get(i).num-stack.get(i+1).num==direction) {
+               count++;
+               i++;
+           }
+           else if(stack.get(i).num==13&&stack.get(i+1).num==1){
+               count++;
+               i++;
+               }
+           else if(stack.get(i).num==1&&stack.get(i+1).num==13){
+               count++;
+               i++;
+           }
+           else{
+               return;
+           }
        }
         if (count<4) return;
         for (i=0;i<count+1;i++) {
@@ -158,23 +186,14 @@ public class Game {
             a.notifyItemRemoved(0);
 
         }
+        if (stack.size()==0){
+            stack.add(new Number(0,false));
+            a.notifyItemInserted(0);
+        }
         temp=new Undo(stack, nest, a, null, count+1, false, false);
         temp.next=head.next;
         head.next=temp;
-//        temp=new Undo(stack, nest, a, null, count+1, false, false);
-//        temp.next=head.next;
-//        head.next=temp;
- //       Log.i("nest", nest.toString());
-       // printUndoTrain();
 
-//        for (int i=1;i<4;i++){//check for five
-//            if (stack.get(i).num-stack.get(i+1).num!=direction)return;
-//        }
-//        for (int i=0;i<5;i++){
-//            nest.add(stack.remove(0));
-//            //a.vList.remove(0);///This is something I changed hopefully I don't break everything!!
-//            a.notifyItemRemoved(0);
-//        }
     }
 
     private boolean validMove(int id, int id2, int n1, int n2, int pos) {
@@ -183,17 +202,41 @@ public class Game {
             //makeSmall();
             return false;
         }
+        if (second.num==0){
+            //second.stack.remove(0);
+            return true;
+        }
+        if (n1==1){
+            if (n2!=13){
+                if (n2!=2) {
+                    if (n2!=1)
+                    return false;
+                }
+            }
+            return true;
+        }
+        if (n1==13){
+            if (n2!=1){
+                if (n2!=12) {
+                    if (n2 != 13)
+                        return false;
+                }
+            }
+            return true;
+        }
         if (freebie&&id==id2){
             //freebie=false;
             return true;
         }
-       else if (n1!=n2&&Math.abs(n1-n2)!=1&&(n1!=1&&n2!=13)&&(n1!=13&&n2!=1)){
+       else if (n1!=n2&&Math.abs(n1-n2)!=1){
            // makeSmall();
             return false;
         }
-      else   if (n1==n2&&pos==0){
+
+      else if (n1==n2&&pos==0){
             return true;
         }
+
         int direction=n1-n2;
         if (pos==0)return true;
 
@@ -240,26 +283,7 @@ public class Game {
         }
 
     }
-    //this whole method is screwy!
-//    public void makeBig(int pos,MyAdapter a){//, ArrayList<View> stack) {
-//        int direction=0;
-//        for (int j = 0; j <= pos; j++) {
-//            // v=rViews[i].adapter.vList.get(j);
-////            ((TextView) stack.get(stack.size()-j-1)).setTextSize(TypedValue.COMPLEX_UNIT_SP, 100);
-////            Log.i("Big","pos"+pos+" j"+j);
-////            int t=first.adapter.vList.size();//-j-1;
-////            ((TextView) first.adapter.vList.get(first.adapter.vList.size()-j-1)).setTextSize(TypedValue.COMPLEX_UNIT_SP, 100);
-//            if (j==0&&first.stack.size()>1){
-//                direction=first.stack.get(0)-first.stack.get(1);
-//                ((TextView) first.adapter.vList.get(first.adapter.vList.size()-1)).setTextSize(TypedValue.COMPLEX_UNIT_SP, 100);
-//
-//                if (Math.abs(direction)!=1) return;
-//            }
-//            if (j!=pos&&first.stack.get(j)-first.stack.get(j+1)!=direction)return;
-//            ((TextView) first.adapter.vList.get(first.adapter.vList.size()-j-1)).setTextSize(TypedValue.COMPLEX_UNIT_SP, 100);
-//            //a.notify(first.adapter.vList.size()-j-1);
-//
-//        }
+
     public void PleaseJustMakeItBig(int pos){//thats what she said
         int direction=0;
         for (int j = 0; j <= pos; j++) {
@@ -285,6 +309,18 @@ public class Game {
 
     public void doDeckStuff(MyAdapter a1,MyAdapter a2, MyAdapter a3, MyAdapter a4) {
 
+        if (first.inUse) {
+            makeSmall();
+        }
+
+        first.inUse=false;
+        second.inUse=false;
+
+        if(stack1.size()>0&&stack1.get(0).num==0){
+            stack1.remove(0);
+            a1.notifyItemRemoved(0);
+        }
+
         stack1.add(0,deck.remove(0));
         a1.notifyItemInserted(0);
         temp=new Undo(deck, stack1, null, a1, 1, false, true);
@@ -293,6 +329,10 @@ public class Game {
 //        Log.i("Butt", "added");
 //        for (int i=0;i<a1.vList.size();i++){///had to add these stupid lines of code because it was getting big for no reason!
 //            ((TextView) a1.vList.get(i)).setTextSize(TypedValue.COMPLEX_UNIT_SP, 70);
+        if(stack2.size()>0&&stack2.get(0).num==0){
+            stack2.remove(0);
+            a2.notifyItemRemoved(0);
+        }
 //        }
         stack2.add(0,deck.remove(0));
         a2.notifyItemInserted(0);
@@ -303,6 +343,10 @@ public class Game {
 //        for (int i=0;i<a2.vList.size();i++){
 //            ((TextView) a2.vList.get(i)).setTextSize(TypedValue.COMPLEX_UNIT_SP, 70);
 //        }
+        if(stack3.size()>0&&stack3.get(0).num==0){
+            stack3.remove(0);
+            a3.notifyItemRemoved(0);
+        }
         stack3.add(0,deck.remove(0));
         a3.notifyItemInserted(0);
         temp=new Undo(deck, stack3, null, a3, 1, false, true);
@@ -312,6 +356,10 @@ public class Game {
 //        for (int i=0;i<a3.vList.size();i++){
 //            ((TextView) a3.vList.get(i)).setTextSize(TypedValue.COMPLEX_UNIT_SP, 70);
 //        }
+        if(stack4.size()>0&&stack4.get(0).num==0){
+            stack4.remove(0);
+            a4.notifyItemRemoved(0);
+        }
         stack4.add(0,deck.remove(0));
         a4.notifyItemInserted(0);
         temp=new Undo(deck, stack4, null, a4, 1, false, true);
@@ -338,13 +386,19 @@ public class Game {
         if (sList.get(id-1).size()>1&&sList.get(id-1).get(0).num==sList.get(id-1).get(1).num){
             moveToNest(id, a);
             moveToNest(id, a);
-            temp=new Undo(sList.get(id-1), nest, a, null, 1, true, false);
+            temp=new Undo(sList.get(id-1), nest, a, null, 1, false, false);
             temp.next=head.next;
             head.next=temp;
             temp=new Undo(sList.get(id-1), nest, a, null, 1, false, false);
             temp.next=head.next;
             head.next=temp;
             //printUndoTrain();
+
+            if(sList.get(id-1).size()==0) {
+                sList.get(id-1).add(new Number(0,false));
+               // a.notifyItemRemoved(0);
+            }
+
         }
     }
 
@@ -352,6 +406,10 @@ public class Game {
         //Log.i("undo", nest.toString());
         int repeats;
         if (head.next==null)return 0;
+        if (head.next.from.get(0).num==0){
+            head.next.from.remove(0);
+            head.next.fa.notifyItemRemoved(0);
+        }
        // Log.i("Butt", ""+head.next.count);
         for (int i=0; i<head.next.count;i++){
 
@@ -361,7 +419,9 @@ public class Game {
 
         }
         if (head.next.pair) repeats=2;
-        else if (head.next.dirtyDeckStuff)repeats=4;
+        else if (head.next.dirtyDeckStuff){
+            repeats=4;
+        }
         else{
             repeats=1;
         }

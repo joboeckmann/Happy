@@ -1640,12 +1640,13 @@ containing a value of this type.
         public static final int activity_joke=0x7f030019;
         public static final int activity_main=0x7f03001a;
         public static final int activity_welcome=0x7f03001b;
-        public static final int large_text=0x7f03001c;
-        public static final int my_text_view=0x7f03001d;
-        public static final int select_dialog_item_material=0x7f03001e;
-        public static final int select_dialog_multichoice_material=0x7f03001f;
-        public static final int select_dialog_singlechoice_material=0x7f030020;
-        public static final int support_simple_spinner_dropdown_item=0x7f030021;
+        public static final int invisible=0x7f03001c;
+        public static final int large_text=0x7f03001d;
+        public static final int my_text_view=0x7f03001e;
+        public static final int select_dialog_item_material=0x7f03001f;
+        public static final int select_dialog_multichoice_material=0x7f030020;
+        public static final int select_dialog_singlechoice_material=0x7f030021;
+        public static final int support_simple_spinner_dropdown_item=0x7f030022;
     }
     public static final class menu {
         public static final int menu_joke=0x7f0d0000;

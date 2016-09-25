@@ -24,7 +24,8 @@
         </activity>
         <activity
             android:name="example.happy.MainActivity"
-            android:label="@string/title_activity_main" >
+            android:label="@string/title_activity_main"
+            android:screenOrientation="portrait" >
         </activity>
         <activity
             android:name="example.happy.JokeActivity"

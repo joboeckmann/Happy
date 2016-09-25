@@ -51,6 +51,9 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.ViewHolder> {
 
     @Override
     public int getItemViewType(int position) {
+
+        if(mDataset.get(position).num==0) return 0;
+
        if (mDataset.get(position).big) return 2;
 
         return 1;
@@ -62,7 +65,11 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.ViewHolder> {
                                                    int viewType) {
         TextView v;
         // create a new view
-    if (viewType==1)
+        if (viewType==0){
+            v = (TextView) LayoutInflater.from(parent.getContext())
+                    .inflate(R.layout.invisible, parent, false);
+        }
+    else if (viewType==1)
              v = (TextView) LayoutInflater.from(parent.getContext())
                     .inflate(R.layout.my_text_view, parent, false);
 //        }
@@ -98,15 +105,5 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.ViewHolder> {
     public interface ClickListener {
         void onItemClick(int position, View v);
     }
-//    public void makeBig(int pos){
-//
-//    }
 
-//    public String vListString(){
-//        String s="";
-//        for (int i=0;i<vList.size();i++){
-//            s=s+vList.get(i).getHeight()+", ";
-//        }
-//        return s;
-//    }
 }
