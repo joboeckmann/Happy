@@ -9,31 +9,32 @@ import android.widget.TextView;
 
 import java.util.ArrayList;
 
+/**
+ * This was tricky. This object stores the views for the numbers in the stacks. They all start out
+ * small. However when a player selects one it gets bigger and then after a move is completed it
+ * gets small again.  Sounds simple but it was unexpectedly difficult.
+ */
 public class MyAdapter extends RecyclerView.Adapter<MyAdapter.ViewHolder> {
     public ArrayList<Number> mDataset;
     private  ClickListener clickListener;
     private ViewHolder vh;
-    //public  ArrayList<View> vList;
    public int stackID;
 
 
-    // Provide a reference to the views for each data item
-    // Complex data items may need more than one view per item, and
-    // you provide access to all the views for a data item in a view holder
     public class ViewHolder extends RecyclerView.ViewHolder implements View
             .OnClickListener{
         public TextView mTextView;
         public ViewHolder(TextView v) {
             super(v);
-            v.setOnClickListener(this);
-            mTextView= (TextView) v.findViewById(R.id.numView);
-           // vList.add(v);
+            v.setOnClickListener(this);//Create the onclick listener
+            mTextView= (TextView) v.findViewById(R.id.numView);//set the small view
 
         }
 
         @Override
         public void onClick(View v) {
             clickListener.onItemClick(getAdapterPosition(), v);
+            //get the position that was clicked
 
         }
     }
@@ -42,43 +43,43 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.ViewHolder> {
     }
 
 
-    // Provide a suitable constructor (depends on the kind of dataset)
+ //The dataset is the the stack of Numbers
     public MyAdapter(ArrayList<Number> myDataset,int id) {
-        //vList=new ArrayList<View>();
         mDataset = myDataset;
         stackID=id;
     }
 
+    //determines which view (big or small)
     @Override
     public int getItemViewType(int position) {
 
-        if(mDataset.get(position).num==0) return 0;
+       if(mDataset.get(position).num==0) return 0;//If the num is 0 that means it is invisible
+       if (mDataset.get(position).big) return 2;//big
 
-       if (mDataset.get(position).big) return 2;
-
-        return 1;
+        return 1;//everything else should be small
     }
 
-    // Create new views (invoked by the layout manager)
+    // Determines which view to use
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent,
                                                    int viewType) {
         TextView v;
-        // create a new view
+
+        //invisible;
         if (viewType==0){
             v = (TextView) LayoutInflater.from(parent.getContext())
                     .inflate(R.layout.invisible, parent, false);
         }
-    else if (viewType==1)
+        //regular view
+        else if (viewType==1){
              v = (TextView) LayoutInflater.from(parent.getContext())
                     .inflate(R.layout.my_text_view, parent, false);
-//        }
+       }
+        //Big view
         else{
             v = (TextView) LayoutInflater.from(parent.getContext())
                     .inflate(R.layout.large_text, parent, false);
         }
-        // set the view's size, margins, paddings and layout parameters
-
          vh = new ViewHolder(v);
         return vh;
     }
@@ -86,8 +87,7 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.ViewHolder> {
     // Replace the contents of a view (invoked by the layout manager)
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
-        // - get element from your dataset at this position
-        // - replace the contents of the view with that element
+        // set the text in the view
         holder.mTextView.setText(""+mDataset.get(position).num);
 
 
@@ -97,9 +97,7 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.ViewHolder> {
     // Return the size of your dataset (invoked by the layout manager)
     @Override
     public int getItemCount() {
-
         return mDataset.size();
-
     }
 
     public interface ClickListener {

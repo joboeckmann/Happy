@@ -11,7 +11,9 @@ import android.widget.TextView;
 
 
 
-
+/**
+ * The simple Welcome activity that opens when the app is opened
+ */
 public class Welcome extends Activity {
 
     @Override
@@ -24,8 +26,11 @@ public class Welcome extends Activity {
             public void onClick(View v) {
 
                 final Handler handler = new Handler();
-               TextView text=(TextView)findViewById(R.id.textView);
+                //A textview that ask how the person is doing
+               TextView text=(TextView)findViewById(R.id.line1);
                 if (v.getId() == R.id.radioButton) {
+                    //If they are having a good day, set the good day response and then
+                    //wait a few second and move to the game activity
                     text.setText(R.string.good_day_response);
                     handler.postDelayed(new Runnable() {
                         @Override
@@ -36,6 +41,8 @@ public class Welcome extends Activity {
                     }, 1000);
                 }
                 else  if (v.getId() == R.id.radioButton2) {
+                    //If they are having a bad day, set the bad day response and then
+                    //wait a few second and move to the joke activity to cheer them up
                     text.setText(R.string.bad_day_response);
                     handler.postDelayed(new Runnable() {
                         @Override
@@ -46,12 +53,10 @@ public class Welcome extends Activity {
                     }, 1000);
                 }
 
-
-
             }
         };
 
-
+        //Radio buttons to choose if the user is having a good or bad day
         RadioButton rb1=(RadioButton) findViewById(R.id.radioButton);
         rb1.setOnClickListener(rb_listener);
 

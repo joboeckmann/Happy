@@ -1,6 +1,7 @@
 package example.happy;
 
 /**
+ * A simple object that stores the number and whether or not it is big
  * Created by Josephine on 4/23/2016.
  */
 public class Number {

@@ -10,7 +10,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceLarge"
-        android:id="@+id/textView"
+        android:id="@+id/line1"
         android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="113dp" />
@@ -20,7 +20,7 @@
         android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceLarge"
         android:text=""
-        android:id="@+id/textView2"
+        android:id="@+id/line2"
         android:layout_centerVertical="true"
         android:layout_centerHorizontal="true" />
 
@@ -29,9 +29,18 @@
         android:layout_height="wrap_content"
         android:text="@string/continue_butt"
         android:id="@+id/button"
-        android:layout_below="@+id/textView2"
+        android:layout_below="@+id/line2"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="96dp" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:text="Medium Text"
+        android:id="@+id/highScore"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true" />
 
 
 </RelativeLayout>
